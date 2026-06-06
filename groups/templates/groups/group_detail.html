@@ -1,0 +1,84 @@
+{% extends "groups/group_base.html" %}
+
+{% block pregroup %}
+
+<div class="row">
+	<div class="col-md-8 col-md-offset-2 text-center">
+
+		<h1>{{ group.name }}</h1>
+		<h4>Members: {{ group.members.count }}</h4>
+
+		<div style="margin-top: 15px; margin-bottom: 25px;">
+
+			{% if is_member %}
+				<a href="{% url 'groups:leave' slug=group.slug %}" class="custom-btn">
+					Leave Group
+				</a>
+			{% else %}
+				<a href="{% url 'groups:join' slug=group.slug %}" class="custom-btn">
+					Join Group
+				</a>
+			{% endif %}
+
+		</div>
+
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block group_content %}
+
+<div class="col-md-8 col-md-offset-2">
+
+	<!-- POST FORM -->
+	{% if is_member %}
+
+	<div style="margin-bottom: 20px;">
+		<form method="POST" action="{% url 'posts:group_post_create' slug=group.slug %}">
+			{% csrf_token %}
+
+			<div class="form-group">
+				<textarea name="message" class="form-control" placeholder="Write a post..."></textarea>
+			</div>
+
+			<button type="submit" class="btn btn-primary">
+				Post
+			</button>
+		</form>
+	</div>
+
+	{% endif %}
+
+	<!-- POSTS LIST -->
+	{% if is_member %}
+
+		<div class="group-list">
+
+			{% for post in posts %}
+
+				<div class="group-card">
+					{% include "posts/_post.html" %}
+				</div>
+
+			{% empty %}
+
+				<h3 class="text-center">No posts in this group yet!</h3>
+
+			{% endfor %}
+
+		</div>
+
+	{% else %}
+
+		<div class="text-center">
+			<h3>This is a private group.</h3>
+			<p>You must join to see posts.</p>
+		</div>
+
+	{% endif %}
+
+</div>
+
+{% endblock %}

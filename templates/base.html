@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Star Social</title>
+    <!-- Latest compiled and minified CSS -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/master.css'%}">
+
+
+  </head>
+  <body>
+    
+    <nav class="navbar  mynav" role="navigation" id="navbar">
+    			<div class="container">
+
+            <a class="navbar-brand mynav" href="{% url 'home' %}">{% block brand_name %}Star Social{% endblock %}</a>
+
+    					<ul class="nav navbar-nav navbar-right">
+    						{% if user.is_authenticated %}
+                      <li><a href="{% url 'posts:create' %}" class="btn btn-simple">Create Post</a></li>
+                      <li><a href="{% url 'posts:all' %}" class="btn btn-simple">My Posts</a></li>
+                      <li><a href="{% url 'groups:mygroups' %}" class="btn btn-simple">My Groups</a></li>
+                      <li><a href="{% url 'groups:create' %}" class="btn btn-simple">Create Group</a></li>
+                      <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log out</a></li>
+                      <form id="logout-form"
+                            action="{% url 'accounts:logout' %}"
+                            method="post"
+                            style="display:none;">
+                          {% csrf_token %}
+                      </form>
+    						{% else %}
+    			
+    						      <li><a href="{% url 'accounts:login' %}" class="btn btn-simple">Log in</a></li>
+    						      <li><a href="{% url 'accounts:signup' %}" class="btn btn-simple">Sign up</a></li>
+    						{% endif %}
+    					</ul>
+
+
+
+    			</div>
+    		</nav>
+        <div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-md-offset-2">
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</div>
+
+
+  </body>
+
+</html>
+

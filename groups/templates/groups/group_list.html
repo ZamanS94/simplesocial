@@ -1,0 +1,84 @@
+{% extends "groups/group_base.html" %}
+
+{% block pregroup %}
+<div class="col-md-4">
+
+	<div class="content">
+
+		<h2>
+			My Groups (@{{ user.username }})
+		</h2>
+		{% if object_list %}
+			<p>Groups you've joined.</p>
+		{% else %}
+			<p>You have not joined any group yet.</p>
+		{% endif %}
+
+	</div>
+
+<!-- BUTTONS (FIXED LOOK) -->
+	<div style="margin-top:20px; display:flex; flex-direction:column; gap:10px;">
+
+		<a href="{% url 'home' %}" class="custom-btn" style="text-align:center;">
+			Browse All Groups
+		</a>
+
+		<a href="{% url 'groups:create' %}" class="custom-btn" style="text-align:center;">
+			Create New Group
+		</a>
+
+	</div>
+</div>
+{% endblock %}
+
+
+{% block group_content %}
+<div class="col-md-8">
+
+	<div class="list-group">
+
+		{% for group in object_list %}
+
+			<a class="list-group-item"
+			   href="{% url 'groups:single' slug=group.slug %}">
+
+				<h3 class="title list-group-item-heading">
+					{{ group.name }}
+				</h3>
+
+				<div class="list-group-item-text container-fluid">
+
+					{{ group.description_html|safe }}
+
+					<div class="row" style="margin-top:10px;">
+
+						<div class="col-md-4">
+							<span class="badge">
+								{{ group.members.count }}
+							</span>
+							member{{ group.members.count|pluralize }}
+						</div>
+
+						<div class="col-md-4">
+							<span class="badge">
+								{{ group.posts.count }}
+							</span>
+							post{{ group.posts.count|pluralize }}
+						</div>
+
+					</div>
+
+				</div>
+
+			</a>
+
+		{% empty %}
+
+			
+
+		{% endfor %}
+
+	</div>
+
+</div>
+{% endblock %}

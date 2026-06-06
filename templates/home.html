@@ -1,0 +1,67 @@
+{% extends "groups/group_base.html" %}
+
+{% block pregroup %}
+<div class="row justify-content-center">
+
+	<div class="col-md-8 text-center">
+
+		<div class="content">
+
+			{% if user.is_authenticated %}
+			<h2>
+				Welcome back
+				<a href="{% url 'posts:for_user' username=user.username %}">
+					@{{ user.username }}
+				</a>
+			</h2>
+			{% endif %}
+
+			<h3>Select a group with a shared interest</h3>
+
+		</div>
+
+	</div>
+
+</div>
+{% endblock %}
+
+
+{% block group_content %}
+<div class="row justify-content-center mt-4">
+
+	<div class="col-md-8">
+
+		<div class="group-list">
+
+			{% for group in object_list %}
+			<a class="group-card" href="{% url 'groups:single' slug=group.slug %}">
+				
+				<h3 class="group-title">{{ group.name }}</h3>
+
+				<p class="group-desc">
+					{{ group.description_html|safe }}
+				</p>
+
+				<div class="group-meta">
+					<span>👥 {{ group.members.count }} Members</span>
+					<span>📝 {{ group.posts.count }} Posts</span>
+				</div>
+
+			</a>
+			{% empty %}
+				<p class="text-center">No groups available.</p>
+			{% endfor %}
+
+		</div>
+
+		<!-- CREATE BUTTON (CENTERED) -->
+		<div class="text-center" style="margin-top: 25px;">
+			<a href="{% url 'groups:create' %}" class="custom-btn">
+				+ Create New Group
+			</a>
+		</div>
+
+	</div>
+
+</div>
+{% endblock %}
